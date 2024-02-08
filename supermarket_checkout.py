@@ -63,3 +63,28 @@ class Checkout:
                 total_price += quantity * self.prices[item]
         return total_price
 
+if __name__ == "__main__":
+    checkout = Checkout()
+    test_cases = [
+        ("", 0),
+        ("A", 50),
+        ("AB", 80),
+        ("CDBA", 115),
+        ("AA", 100),
+        ("AAA", 130),
+        ("AAAA", 180),
+        ("AAAAA", 230),
+        ("AAAAAA", 260),
+        ("AAAB", 160),
+        ("AAABB", 175),
+        ("AAABBD", 190),
+        ("DABABA", 190)
+    ]
+
+    for test_input, expected_output in test_cases:
+        for item in test_input:
+            checkout.scan(item)
+        total = checkout.calculate_total()
+        print(f"Input: {test_input}, Expected Output: {expected_output}, Actual Output: {total}")
+        assert total == expected_output, f"Test failed for input: {test_input}"
+        checkout.cart.clear()
