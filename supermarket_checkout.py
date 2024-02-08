@@ -39,12 +39,13 @@ class Checkout:
         """
         total_price = 0
         for item, quantity in self.cart.items():
+            item_price = self.prices.get(item, 0) 
             if item in self.special_offers:
                 special_quantity, special_price = self.special_offers[item]
                 special_offer_count = quantity // special_quantity
                 remaining_count = quantity % special_quantity
-                total_price += special_offer_count * special_price + remaining_count * self.prices[item]
+                total_price += special_offer_count * special_price + remaining_count * item_price
             else:
-                total_price += quantity * self.prices[item]
+                total_price += quantity * item_price
         return total_price
 

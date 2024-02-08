@@ -47,5 +47,19 @@ class TestCheckout(unittest.TestCase):
                 self.assertEqual(total, expected_output, f"Test failed for input: {test_input}")
                 self.checkout.cart.clear()
 
+    def test_items_not_in_price_list(self):
+        """
+        Test scanning items that are not in the price list.
+        """
+        self.checkout.scan("E")
+        self.assertEqual(self.checkout.calculate_total(), 0)
+
+    def test_mixed_case(self):
+        """
+        Test scanning items with a mix of upper and lower-case codes.
+        """
+        self.checkout.scan("a")
+        self.assertEqual(self.checkout.calculate_total(), 0)
+
 if __name__ == "__main__":
     unittest.main()
