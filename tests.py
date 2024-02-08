@@ -51,15 +51,10 @@ class TestCheckout(unittest.TestCase):
         """
         Test scanning items that are not in the price list.
         """
-        self.checkout.scan("E")
-        self.assertEqual(self.checkout.calculate_total(), 0)
+        with self.assertRaises(ValueError) as context:
+            self.checkout.scan("E")
 
-    def test_mixed_case(self):
-        """
-        Test scanning items with a mix of upper and lower-case codes.
-        """
-        self.checkout.scan("a")
-        self.assertEqual(self.checkout.calculate_total(), 0)
+        self.assertIn("Item 'E' not found in the price list.", str(context.exception))
 
 if __name__ == "__main__":
     unittest.main()

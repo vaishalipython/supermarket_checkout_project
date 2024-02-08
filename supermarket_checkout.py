@@ -30,6 +30,21 @@ class Checkout:
         else:
             self.cart[item] += 1
 
+    def scan(self, item):
+        """
+        Adds an item to the cart or increments its quantity if it already exists.
+
+        Args:
+            item (str): The code representing the item to be scanned.
+        """
+        if item in self.prices:
+            if item not in self.cart:
+                self.cart[item] = 1
+            else:
+                self.cart[item] += 1
+        else:
+            raise ValueError(f"Item '{item}' not found in the price list.")
+
     def calculate_total(self):
         """
         Calculates the total price of the items in the cart, considering special offers.
@@ -39,13 +54,12 @@ class Checkout:
         """
         total_price = 0
         for item, quantity in self.cart.items():
-            item_price = self.prices.get(item, 0) 
             if item in self.special_offers:
                 special_quantity, special_price = self.special_offers[item]
                 special_offer_count = quantity // special_quantity
                 remaining_count = quantity % special_quantity
-                total_price += special_offer_count * special_price + remaining_count * item_price
+                total_price += special_offer_count * special_price + remaining_count * self.prices[item]
             else:
-                total_price += quantity * item_price
+                total_price += quantity * self.prices[item]
         return total_price
 
